@@ -64,6 +64,11 @@ function verbosa_conditionals( $control ) {
 			'parent'=> 'verbosa_lpposts',
 			'value' => 1,
 		),
+		array(
+			'id'	=> 'verbosa_landingpage_fronthint',
+			'parent'=> 'verbosa_lpposts',
+			'value'	=> 2,
+		),
 	);
 
 	foreach ($conditionals as $elem) {
@@ -87,6 +92,8 @@ function verbosa_conditionals( $control ) {
 
 } // verbosa_conditionals()
 
+function verbosa_big_init() {
+global $verbosa_big;
 $verbosa_big = array(
 
 /************* general info ***************/
@@ -94,7 +101,7 @@ $verbosa_big = array(
 'info_sections' => array(
 	'cryoutspecial-about-theme' => array(
 		'title' => sprintf( __( 'About %s', 'cryout' ), cryout_sanitize_tnl(_CRYOUT_THEME_NAME) ),
-		'desc' => '<img src=" ' . get_template_directory_uri() . '/admin/images/logo-about-header.png" >',
+		'desc' => '<div style="text-align: center;"><img src=" ' . get_template_directory_uri() . '/admin/images/logo-about-header.png" ></div>',
 		'button' => TRUE,
 		'button_label' => __( 'Need Help?', 'cryout' ),
 	),
@@ -134,7 +141,7 @@ $verbosa_big = array(
 ), // info_settings
 
 'panel_overrides' => array(
-	'background' => array(
+	/* 'background' => array(
         'title' => __( 'Background', 'cryout' ),
 		'desc' => '',
 		'priority' => 50,
@@ -157,7 +164,7 @@ $verbosa_big = array(
 		'section' => 'cryoutoverride-verbosa_siteidentity',
 		'replaces' => 'title_tagline',
 		'type' => 'section',
-	),
+	),*/
 	'colors' => array(
 		'section' => 'section',
 		'replaces' => 'colors',
@@ -166,16 +173,22 @@ $verbosa_big = array(
 
 ), // panel_overrides
 
+'priorities_overrides' => array(
+	'title_tagline' => '20', // default: 20
+	'header_image' => '22', // default: 60
+	'background_image' => '24', // default: 80
+), // priorities_overrides
+
 /************* panels *************/
 
 'panels' => array(
 
-	array('id'=>'verbosa_siteidentity', 'title'=>__('Site Identity','verbosa'), 'callback'=>'', 'identifier'=>'cryoutoverride-' ),
-	array('id'=>'verbosa_landingpage', 'title'=>__('Landing Page','verbosa'), 'callback'=>''),
-	array('id'=>'verbosa_general_section', 'title'=>__('General','verbosa') , 'callback'=>''),
-	array('id'=>'verbosa_colors_section', 'title'=>__('Colors','verbosa'), 'callback'=>'' ),
-	array('id'=>'verbosa_post_section', 'title'=>__('Post Information','verbosa') , 'callback'=>''),
-	array('id'=>'verbosa_text_section', 'title'=>__('Typography','verbosa'), 'callback'=>''),
+	//array('id'=>'verbosa_siteidentity', 'title'=>__('Site Identity','verbosa'), 'callback'=>'', 'identifier'=>'cryoutoverride-' ),
+	array('id'=>'verbosa_landingpage', 'title'=>__('Landing Page','verbosa'), 'callback'=>'', 'priority' => 40 ),
+	array('id'=>'verbosa_general_section', 'title'=>__('General','verbosa') , 'callback'=>'', 'priority' => 45 ),
+	array('id'=>'verbosa_colors_section', 'title'=>__('Colors','verbosa'), 'callback'=>'', 'priority' => 50 ),
+	array('id'=>'verbosa_text_section', 'title'=>__('Typography','verbosa'), 'callback'=>'', 'priority' => 55 ),
+	array('id'=>'verbosa_post_section', 'title'=>__('Post Information','verbosa') , 'callback'=>'', 'priority' => 60 ),
 
 ), // panels
 
@@ -184,11 +197,11 @@ $verbosa_big = array(
 'sections' => array(
 
 	// layout
-	array('id'=>'verbosa_layout', 'title'=>__('Layout', 'verbosa'), 'callback'=>'', 'sid'=>'', 'priority'=>51),
+	array('id'=>'verbosa_layout', 'title'=>__('Layout', 'verbosa'), 'callback'=>'', 'sid'=>'', 'priority'=>35 ),
 	// header
-	array('id'=>'verbosa_siteheader', 'title'=>__('Header','verbosa'), 'callback'=>'', 'sid'=> '', 'priority'=>52 ),
+	array('id'=>'verbosa_siteheader', 'title'=>__('Header','verbosa'), 'callback'=>'', 'sid'=> '', 'priority'=>37 ),
 	// landing page
-	array('id'=>'verbosa_lpgeneral', 'title'=>__('Settings','verbosa'), 'callback'=>'', 'sid'=>'verbosa_landingpage', ),
+	array('id'=>'verbosa_lpgeneral', 'title'=>__('General','verbosa'), 'callback'=>'', 'sid'=>'verbosa_landingpage', ),
 	array('id'=>'verbosa_lpslider', 'title'=>__('Slider','verbosa'), 'callback'=>'', 'sid'=>'verbosa_landingpage', ),
 	array('id'=>'verbosa_lptexts', 'title'=>__('Text Areas','verbosa'), 'callback'=>'', 'sid'=>'verbosa_landingpage', ),
 	// text
@@ -211,7 +224,7 @@ $verbosa_big = array(
 	array('id'=>'verbosa_excerpts', 'title'=>__('Excerpts','verbosa'), 'callback'=>'', 'sid'=> 'verbosa_post_section'),
 	array('id'=>'verbosa_comments', 'title'=>__('Comments','verbosa'), 'callback'=>'', 'sid'=> 'verbosa_post_section'),
 	// misc
-	array('id'=>'verbosa_misc', 'title'=>__('Miscellaneous','verbosa'), 'callback'=>'', 'sid'=> '', 'priority'=>82),
+	array('id'=>'verbosa_misc', 'title'=>__('Miscellaneous','verbosa'), 'callback'=>'', 'sid'=> '', 'priority'=> 65 ),
 
 	/*** developer options ***/
 	//array('id'=>'verbosa_developer', 'title'=>__('[ Developer Options ]','verbosa'), 'callback'=>'', 'sid'=>'', 'priority'=>101),
@@ -341,6 +354,7 @@ $verbosa_big = array(
 		'priority' => 55,
 		'addon' => TRUE, // this option gets added to built-in WordPress section
 	'section' => 'title_tagline' ),
+	// verbosa does not support header video so the corresponding hint is not necessary
 	array(
 	'id' => 'verbosa_headerorbannerhint',
 		'type' => 'notice',
@@ -427,12 +441,31 @@ $verbosa_big = array(
 		'active_callback' => 'verbosa_conditionals',
 	'section' => 'verbosa_lpgeneral' ),
 	array(
+ 	'id' => 'verbosa_landingpage_fronthint',
+ 		'type' => 'notice',
+ 		'label' => '',
+		'input_attrs' => array( 'class' => '' ),
+ 		'desc' => sprintf( __( "Select the front (static) page in WordPress' %s","verbosa" ), "<a data-type='section' data-id='static_front_page' class='cryout-customizer-focus'><strong>" . __("Homepage Settings", "verbosa") . " &raquo;</strong></a>" ),
+ 		'active_callback' => 'verbosa_conditionals',
+	'section' => 'verbosa_lpgeneral' ),
+	array(
 	'id' => 'verbosa_lpposts_more',
 		'type' => 'text',
 		'label' => __( 'More Posts Label', 'verbosa' ),
 		'desc' => '',
 		'active_callback' => 'verbosa_conditionals',
 	'section' => 'verbosa_lpgeneral' ),
+
+	// lp-related hint to WP's homepage panel
+	array(
+	'id' => 'verbosa_landingpage_wphint',
+		'type' => 'notice',
+		'label' => '',
+		'desc' => sprintf( __( 'Configure the theme\'s landing page functionality in the %s','verbosa' ), '<a data-type="section" data-id="cryout-verbosa_lpgeneral" class="cryout-customizer-focus"><strong>' . __('Landing Page options', 'verbosa') . ' &raquo;</strong></a>' ),
+		'input_attrs' => array( 'class' => '' ),
+		'priority' => 55,
+		'addon' => TRUE, // this option gets added to built-in WordPress section
+	'section' => 'static_front_page' ),
 
 	// slider
 	array(
@@ -1473,5 +1506,9 @@ $verbosa_big = array(
 
 
 ); // $verbosa_big
+
+} // verbosa_big_init()
+
+add_action( 'after_setup_theme', 'verbosa_big_init' ); // init is too late for widgets_init
 
 // FIN

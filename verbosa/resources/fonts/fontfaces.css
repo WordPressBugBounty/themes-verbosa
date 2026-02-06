@@ -351,6 +351,8 @@
 .socials a[href*="sourceforge.net"]::before, .socials a.sourceforge::before { content: "\e92c"; }
 .socials a[href*="snapchat.com"]::before, .socials a.snapchat::before { content: "\e92d"; }
 .socials a[href*="signal.org"]::before, .socials a.signal::before { content: "\e92f"; }
+/* 2025 */
+.socials a[href*="bsky.app"]::before, .socials a.bluesky::before { content: "\e930"; }
 
 .socials a[href*="duckduckgo.com"]::after, .socials a.duckduckgo::after { content: '\e801'; }
 .socials a[href*="aim.com"]::after, .socials a.aim::after { content: '\e802'; }

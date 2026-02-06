@@ -1,12 +1,12 @@
 <?php
 /**
  * @package Cryout Framework
- * @version 0.8.6.5
- * @revision 20240712
+ * @version 0.8.7.1
+ * @revision 20251026
  * @author Cryout Creations - www.cryoutcreations.eu
  */
 
-define('_CRYOUT_FRAMEWORK_VERSION', '0.8.6.5');
+define('_CRYOUT_FRAMEWORK_VERSION', '0.8.7.1');
 
 // Load everything
 require_once(get_template_directory() . "/cryout/prototypes.php");

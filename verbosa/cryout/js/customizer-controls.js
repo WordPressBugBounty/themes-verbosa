@@ -100,9 +100,6 @@ jQuery(document).ready(function(){
 			}
 		}); // sortable
 
-		// RadioImage Control
-		jQuery( '.customize-control-radio-image .buttonset' ).buttonset();
-		
 		// Icon Select2 Control
 		var cryoutSelect2Texts = {
 			errorLoading: function(){ return "The results could not be loaded" },
@@ -114,6 +111,14 @@ jQuery(document).ready(function(){
 			maximumSelected:function(){ return "You have selected too many items"}
 		}
 
+		// ImageRadio Control
+		jQuery('.customize-control-imageradio .radio-image-label input[type="radio"]').on('change', function() {
+			const group = jQuery(this).attr('name');
+			jQuery('input[name="${group}"]').each(function() {
+				jQuery(this).siblings('figure').removeClass('active');
+			});
+			jQuery(this).siblings('figure').addClass('active');
+		});
 		// init select2 control on font selectors
 		if ( jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd ) jQuery('select.fontselect.select2').select2({
 			width: "element",
@@ -126,6 +131,29 @@ jQuery(document).ready(function(){
 			theme: 'default cryout-select2 cryout-iconselect',
 			language: cryoutSelect2Texts
 		}).addClass( 'cryout-select2 cryout-iconselect' );
+		// handle personalities apply button
+		if (document.getElementById('cryout_scheme_apply_button')) {
+			var cryout_scheme_id = jQuery('#cryout_scheme_apply_button').attr('data-customize-setting-link').replace(/_apply/,'');
+			var cryout_saved_scheme = false;
+			wp.customize(cryout_scheme_id, function(setting) {
+				cryout_saved_scheme = setting['_value'];
+
+				setting.bind(function(newVal) {
+					if (newVal != cryout_saved_scheme) {
+						jQuery('#cryout_scheme_apply_button').prop('disabled', false);
+					} else {
+						jQuery('#cryout_scheme_apply_button').prop('disabled', true);
+					}
+				});
+			});
+			jQuery('#cryout_scheme_apply_button').on('click', function(e) {
+				e.preventDefault();
+				wp.customize.previewer.save().then( function() {
+					location.reload(); // and completely reload to apply filtered defaults
+					//wp.customize.previewer.refresh(); // and refresh previewer
+				});
+			});
+		};
 
 	}); // setTimeout		
 

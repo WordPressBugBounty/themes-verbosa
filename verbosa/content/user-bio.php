@@ -27,7 +27,7 @@ $verbosa_heading_tag = ( is_single() ) ? 'h4' : 'h1';
 			<?php if ( is_single() ) { ?>
 				<div class="author-link">
 					<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>"  <?php cryout_schema_microdata( 'author-url' ); ?>>
-						<?php printf( __( 'View all posts by ', 'verbosa' ) . '%s <span class="meta-nav">&rarr;</span>', esc_attr(get_the_author()) ); ?>
+						<?php printf( esc_attr__( 'View all posts by %s', 'verbosa' ) . '<span class="meta-nav">&rarr;</span>', esc_attr(get_the_author()) ); ?>
 					</a>
 				</div><!-- .author-link	-->
 			<?php } ?>

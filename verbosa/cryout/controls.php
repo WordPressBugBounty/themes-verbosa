@@ -3,7 +3,7 @@
 ///////// CUSTOM CUSTOMIZERS /////////
 function cryout_customizer_extras($wp_customize){
 
-class Cryout_Customize_Link_Control extends WP_Customize_Control {
+	class Cryout_Customize_Link_Control extends WP_Customize_Control {
 			public $type = 'cryout-link';
 			public function render_content() {
 				if ( !empty( $this->description ) ) { ?>
@@ -28,7 +28,44 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 			$json['button_label']  = esc_attr( $this->button_label );
 			return $json;
 		}
-		protected function render_template() { ?>
+		protected function render_template() { 	if ( version_compare( get_bloginfo( 'version' ), '6.7', '>=' ) ) { ?>
+		<li id="accordion-section-{{ data.id }}" class="accordion-section control-section accordion-cryout-a11y customize-cryoutspecial-about-section control-section-{{ data.type }}">
+			<h3 class="accordion-section-title">
+				<button type="button" class="accordion-trigger" aria-expanded="false" aria-controls="{{ data.id }}-content"> {{ data.title }} </button>
+
+				<# if ( data.button && data.button_label ) { #>
+					<button class="button alignright">{{ data.button_label }}</button>
+				<# } #>
+			</h3>
+			<ul class="accordion-section-content">
+				<li class="customize-section-description-container section-meta <# if ( data.description_hidden ) { #>customize-info<# } #>">
+					<div class="customize-section-title">
+						<button class="customize-section-back" tabindex="-1"></button>
+						<h3>
+							<span class="customize-action">
+								{{{ data.customizeAction }}}
+							</span>
+							{{ data.title }}
+						</h3>
+						<# if ( data.description && data.description_hidden ) { #>
+							<button type="button" class="customize-help-toggle dashicons dashicons-editor-help" aria-expanded="false"></button>
+							<div class="description customize-section-description">
+								{{{ data.description }}}
+							</div>
+						<# } #>
+
+						<div class="customize-control-notifications-container"></div>
+					</div>
+
+					<# if ( data.description && ! data.description_hidden ) { #>
+						<div class="description customize-section-description">
+							{{{ data.description }}}
+						</div>
+					<# } #>
+				</li>
+			</ul>
+		</li>
+		<?php } else { ?>
 		<li id="accordion-section-{{ data.id }}" class="accordion-section control-section customize-cryoutspecial-about-section control-section-{{ data.type }}">
 			<h3 class="accordion-section-title" tabindex="0">
 				{{ data.title }}
@@ -65,7 +102,7 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 				</li>
 			</ul>
 		</li>
-		<?php }
+		<?php } }
 	} // Cryout_Customize_About_Section()
 
 	class Cryout_Customize_About_Control extends WP_Customize_Control {
@@ -106,7 +143,7 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 			}
 	} // class Cryout_Customize_Description_Control
 
-	class Cryout_Customize_Hint_Control extends WP_Customize_Control {
+/* 	class Cryout_Customize_Hint_Control extends WP_Customize_Control {
 			public $type = 'cryout-hint';
 			public function render_content() {
 					if ( ! empty( $this->label ) ) { ?>
@@ -118,19 +155,22 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 					<span class="customize-control-content customize-cryoutcontrol-hint-value"><?php echo wp_kses_post( $this->value() ) ?></span>
 			<?php
 			}
-	} // class Cryout_Customize_Hint_Control
+	} // class Cryout_Customize_Hint_Control */
 
+	/* @since 0.8.7 - merged 'hint' control as subtype */
 	class Cryout_Customize_Notice_Control extends WP_Customize_Control {
 			public $type = 'cryout-notice';
 			public function render_content() {
-					if (empty($this->input_attrs['class'])) $this->input_attrs['class'] = '';
+					$classes[] = $this->type;
+					if ( !empty( $this->input_attrs['class'] ) ) $classes[] = esc_attr( str_replace( 'notice', '', $this->input_attrs['class'] ) );
+					$classes = implode('-', $classes);
 					if ( ! empty( $this->label ) ) { ?>
-                        <span class="customize-control-title customize-cryoutcontrol-notice customize-cryoutcontrol-notice-<?php echo esc_attr( $this->input_attrs['class'] ) ?>"><?php echo esc_html( $this->label ) ?></span>
+                        <span class="customize-control-title customize-control-<?php echo esc_attr( $classes ) ?>"><?php echo esc_html( $this->label ) ?></span>
 					<?php }
 					if ( ! empty( $this->description ) ) { ?>
-                        <span class="description customize-control-description cryout-nomove customize-cryoutcontrol-notice-desc customize-cryoutcontrol-notice-<?php echo esc_attr( $this->input_attrs['class'] ) ?>-desc"><?php echo wp_kses_post( $this->description ) ?></span>
+                        <span class="description customize-control-description cryout-nomove customize-control-<?php echo esc_attr( $classes ) ?>-desc"><?php echo wp_kses_post( $this->description ) ?></span>
                     <?php } ?>
-					<span class="customize-control-content customize-cryoutcontrol-notice-value customize-cryoutcontrol-notice-<?php echo esc_attr( $this->input_attrs['class'] ) ?>-value"><?php echo wp_kses_post( $this->value() ) ?></span>
+					<span class="customize-control-content customize-control-<?php echo esc_attr( $classes ) ?>-value"><?php echo wp_kses_post( $this->value() ) ?></span>
 			<?php
 			}
 	} // class Cryout_Customize_Notice_Control
@@ -149,6 +189,35 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 			}
 	} // class Cryout_Customize_Null_Control
 
+	class Cryout_Customize_Button_Control extends WP_Customize_Control {
+			public $type = 'cryout-button';
+			public function __construct($manager, $id, $args = array(), $options = array()) {
+				parent::__construct( $manager, $id, $args );
+			} // __construct()
+
+			public function render_content() { ?>
+				<?php if (!empty($this->label)): ?>
+				<label>
+					<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+				</label>
+				<?php endif; ?>
+				<div>
+					<input name="<?php echo esc_attr( $this->id ); ?>" type="button" <?php $this->link(); ?> class="<?php echo esc_attr( $this->input_attrs['class'] ) ?>"
+					<?php foreach ($this->input_attrs as $attr_id => $attr_value) : ?>
+						<?php printf( '%s="%s"', esc_attr( $attr_id ), esc_attr( $attr_value ) ) ?>
+					<?php endforeach ?>/>
+				</div>
+				<?php if ( ! empty( $this->description ) ) : ?>
+					 <span class="description cryout-nomove customize-control-description"><?php echo wp_kses_post( $this->description ) ?></span>
+				<?php endif; ?>
+			<?php
+			} // render_content()
+
+			public function enqueue() {
+				wp_enqueue_script( 'cryout-customizer-controls-js', get_template_directory_uri() . '/cryout/js/customizer-controls.js', array('jquery'), _CRYOUT_THEME_VERSION );
+			} // enqueue()
+
+	} // class Cryout_Customize_NumberSlider_Control
 
 	class Cryout_Customize_Font_Control extends WP_Customize_Control {
 			public $type = 'cryout-font';
@@ -224,7 +293,7 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 				wp_enqueue_script( 'jquery-ui-slider' );
 				wp_enqueue_script( 'cryout-customizer-controls-js', get_template_directory_uri() . '/cryout/js/customizer-controls.js', array('jquery'), _CRYOUT_THEME_VERSION );
 				wp_enqueue_style( 'jquery-ui-slider', get_template_directory_uri() . '/cryout/css/jquery-ui.structure.css', NULL, _CRYOUT_THEME_VERSION );
-				wp_enqueue_style( 'jquery-ui-slider-theme', get_template_directory_uri() . '/cryout/css//jquery-ui.theme.css', NULL, _CRYOUT_THEME_VERSION );
+				wp_enqueue_style( 'jquery-ui-slider-theme', get_template_directory_uri() . '/cryout/css/jquery-ui.theme.css', NULL, _CRYOUT_THEME_VERSION );
 			} // enqueue()
 
 	} // class Cryout_Customize_Slider_Control
@@ -256,7 +325,7 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 				wp_enqueue_script( 'jquery-ui-slider' );
 				wp_enqueue_script( 'cryout-customizer-controls-js', get_template_directory_uri() . '/cryout/js/customizer-controls.js', array('jquery'), _CRYOUT_THEME_VERSION );
 				wp_enqueue_style( 'jquery-ui-slider', get_template_directory_uri() . '/cryout/css/jquery-ui.structure.css' );
-				wp_enqueue_style( 'jquery-ui-slider-theme', get_template_directory_uri() . '/cryout/css//jquery-ui.theme.css' );
+				wp_enqueue_style( 'jquery-ui-slider-theme', get_template_directory_uri() . '/cryout/css/jquery-ui.theme.css' );
 			} // enqueue()
 
 	} // class Cryout_Customize_Slider_Control
@@ -290,7 +359,7 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 				wp_enqueue_script( 'jquery-ui-slider' );
 				wp_enqueue_script( 'cryout-customizer-controls-js', get_template_directory_uri() . '/cryout/js/customizer-controls.js', array('jquery'), _CRYOUT_THEME_VERSION );
 				wp_enqueue_style( 'jquery-ui-slider', get_template_directory_uri() . '/cryout/css/jquery-ui.structure.css', NULL, _CRYOUT_THEME_VERSION );
-				wp_enqueue_style( 'jquery-ui-slider-theme', get_template_directory_uri() . '/cryout/css//jquery-ui.theme.css', NULL, _CRYOUT_THEME_VERSION );
+				wp_enqueue_style( 'jquery-ui-slider-theme', get_template_directory_uri() . '/cryout/css/jquery-ui.theme.css', NULL, _CRYOUT_THEME_VERSION );
 			} // enqueue()
 
 	} // class Cryout_Customize_NumberSlider_Control
@@ -334,6 +403,44 @@ class Cryout_Customize_Link_Control extends WP_Customize_Control {
 				wp_enqueue_script( 'cryout-customizer-controls-js', get_template_directory_uri() . '/cryout/js/customizer-controls.js', array('jquery'), _CRYOUT_THEME_VERSION );
 			}
 	} // class Cryout_Customize_RadioImage_Control
+
+	class Cryout_Customize_Personality_Control extends WP_Customize_Control {
+		public $type = 'cryout-personality';
+
+		public function render_content() {
+			if ( empty( $this->choices ) ) return;
+
+			if ( ! empty( $this->label ) ) : ?>
+				<label class="customize-control-title"><?php echo esc_html( $this->label ); ?></label>
+			<?php endif;
+			if ( ! empty( $this->description ) ) : ?>
+				<span class="description customize-control-description"><?php echo wp_kses_post( $this->description ); ?></span>
+			<?php endif; ?>
+
+			<?php $name = '_customize-imageradio-' . $this->id; ?>
+
+			<div class="personality-image-options">
+				<?php foreach ( $this->choices as $option => $personality ) : ?>
+					<label class="personality-image-label">
+						<input type="radio"
+							name="<?php echo esc_attr( $name ); ?>"
+							value="<?php echo esc_attr( $option ); ?>"
+							<?php $this->link(); ?>
+							<?php checked( $this->value(), $option ); ?> />
+						<figure>
+							<img src="<?php echo esc_url( sprintf( '%s/plus/schemes/%s.jpg', get_template_directory_uri(), $option ) ); ?>" alt="<?php echo esc_attr( $personality ); ?>" />
+							<figcaption><?php echo esc_html( $personality ); ?></figcaption>
+						</figure>
+					</label>
+				<?php endforeach; ?>
+			</div>
+			<?php
+		} // render_content()
+
+		public function enqueue() {
+			wp_enqueue_script( 'cryout-customizer-controls-js', get_template_directory_uri() . '/js/customizer-controls.js', array( 'jquery' ), _CRYOUT_THEME_VERSION, true );
+		} // enqueue()
+	} // Cryout_Customize_Personality_Control()
 
 	class Cryout_Customize_SelectShort_Control extends WP_Customize_Control {
 			public $type = 'cryout-selectshort';

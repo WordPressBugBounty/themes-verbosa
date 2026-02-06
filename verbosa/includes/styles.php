@@ -9,9 +9,7 @@
  * Loading main styles and scripts
  */
 function verbosa_enqueue_styles() {
-	// HTML5 Shiv
-	wp_enqueue_script( 'verbosa-html5shiv', get_template_directory_uri() . '/resources/js/html5shiv.min.js', null, _CRYOUT_THEME_VERSION );
-	if ( function_exists( 'wp_script_add_data' ) ) wp_script_add_data( 'verbosa-html5shiv', 'conditional', 'lt IE 9' );
+	// html5 shiv removed in 1.3.0 due to deprecation of IE conditional comments in WP 6.9
 
 	$cryout_theme_structure = cryout_get_theme_structure();
 	$options = cryout_get_option();
@@ -128,7 +126,7 @@ function verbosa_scripts_filter($tag) {
  */
 function verbosa_responsive_meta() {
 	echo '<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0">' . PHP_EOL;
-	echo '<meta http-equiv="X-UA-Compatible" content="IE=edge" />';
+	// echo '<meta http-equiv="X-UA-Compatible" content="IE=edge" />'; // removed in 1.3.0
 } // verbosa_responsive_meta()
 add_action( 'cryout_meta_hook', 'verbosa_responsive_meta' );
 
@@ -143,6 +141,6 @@ function verbosa_add_editor_styles() {
 	add_editor_style( add_query_arg( 'action', 'verbosa_editor_styles_output', admin_url( 'admin-ajax.php' ) ) );
 	add_action( 'wp_ajax_verbosa_editor_styles_output', 'verbosa_editor_styles_output' );
 }// verbosa_add_editor_styles()
-verbosa_add_editor_styles();
+add_action( 'init', 'verbosa_add_editor_styles' );
 
 /* FIN */

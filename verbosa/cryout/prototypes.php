@@ -58,7 +58,10 @@ function cryout_gen_values( $from, $to, $step = 1, $attr = array() ){
  */
 function cryout_get_theme_options($sub=''){
 	$opts = array();
-	if ( function_exists( preg_replace( '/[^a-z0-9]/i', '_', _CRYOUT_THEME_NAME ) . '_get_theme_options') ) $opts = call_user_func( preg_replace( '/[^a-z0-9]/i', '_', _CRYOUT_THEME_NAME) . '_get_theme_options' );
+	
+	$function_name = cryout_sanitize_tn_fn( _CRYOUT_THEME_NAME ) . '_get_theme_options';
+	if ( function_exists( $function_name ) ) $opts = call_user_func( $function_name );
+	
 	if ( !empty($sub) && !empty($opts[$sub]) ) return $opts[$sub];
 	                                      else return $opts;
 } // cryout_get_theme_options()
@@ -69,10 +72,26 @@ function cryout_get_theme_options($sub=''){
  */
 function cryout_get_theme_structure($sub=''){
 	$opts = array();
-	if ( function_exists( preg_replace( '/[^a-z0-9]/i', '_', _CRYOUT_THEME_NAME ) . '_get_theme_structure' ) ) $opts = call_user_func( preg_replace( '/[^a-z0-9]/i', '_', _CRYOUT_THEME_NAME ) . '_get_theme_structure' );
+	
+	$function_name = cryout_sanitize_tn_fn( _CRYOUT_THEME_NAME ) . '_get_theme_structure';
+	if ( function_exists( $function_name ) ) $opts = call_user_func( $function_name );
+	
 	if ( !empty($sub) && !empty($opts[$sub]) ) return $opts[$sub];
 	                                      else return $opts;
 } // cryout_get_theme_structure()
+
+/**
+ * Returns the theme's default options (used by the Customizer) using the theme's own defaults function
+ * Relies on _CRYOUT_THEME_NAME to distinguish between the correct options arrays
+ */
+function cryout_get_option_defaults(){
+	$defs = array();
+	
+	$function_name = cryout_sanitize_tn_fn( _CRYOUT_THEME_NAME ) . '_get_option_defaults';
+	if ( function_exists( $function_name ) ) $defs = call_user_func( $function_name );
+	
+	return $defs; 
+} // cryout_get_option_defaults()
 
 /**
  * Returns a single theme option or an array of options based on their names
@@ -408,7 +427,7 @@ function cryout_get_featured_srcset( $attachment_id, $sizes = array() ) {
 		$src = $data[0];
 		$width = $data[1];
 		$height = $data[2];
-		$srcset[] = "$src ${width}w";
+		$srcset[] = "$src {$width}w";
 	}
 
 	$srcset = implode(', ', $srcset);
@@ -429,7 +448,7 @@ function cryout_gen_featured_sizes( $default = 1440, $magazinelayout = false, $l
 	} else {
 		$column = 100;
 	};
-	return "(max-width: 800px) 100vw,(max-width: 1152px) ${column}vw, ${default}px";
+	return "(max-width: 800px) 100vw,(max-width: 1152px) {$column}vw, {$default}px";
 } // cryout_gen_featured_sizes()
 
 /**

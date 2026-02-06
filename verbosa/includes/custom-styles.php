@@ -9,7 +9,7 @@ function verbosa_body_classes( $classes ) {
 	$options = cryout_get_option( array(
 		'verbosa_landingpage', 'verbosa_image_style', 'verbosa_magazinelayout', 'verbosa_comclosed', 'verbosa_contenttitles',
 		'verbosa_caption_style', 'verbosa_elementborder', 'verbosa_elementshadow', 'verbosa_elementborderradius', 'verbosa_fresponsive',
-		'verbosa_comlabels', 'verbosa_sidebarback', 'verbosa_comdate'
+		'verbosa_comlabels', 'verbosa_sidebarback', 'verbosa_comdate', 'verbosa_menubullets',
 	) );
 
 	if ( is_front_page() && $options['verbosa_landingpage'] && ('page' == get_option('show_on_front')) ) {
@@ -50,6 +50,8 @@ function verbosa_body_classes( $classes ) {
 
 	if ( !$options['verbosa_sidebarback'] ) $classes[] = 'verbosa-no-sidebar-back';
 
+	if ( $options['verbosa_menubullets'] ) $classes[] = 'verbosa-menubullets';
+	
 	return $classes;
 }
 add_filter( 'body_class', 'verbosa_body_classes' );
@@ -137,10 +139,9 @@ body 										{ color: <?php echo esc_html($verbosa_sitetext); ?>;
 #access a, #access .dropdown-toggle, #mobile-menu a,
 #mobile-menu .dropdown-toggle			{ color: <?php echo esc_html($verbosa_menutext) ?>; }
 #access a:hover, #mobile-menu a:hover		{ color: <?php echo esc_html($verbosa_menutexthover) ?>; }
+<?php if ($verbosa_menubullets) { ?>
 #access li a span:before					{ background-color: <?php echo esc_html(cryout_hexdiff($verbosa_sidebarbackground,51)) ?>; }
 #access li:hover > a:before					{ background-color: <?php echo esc_html($verbosa_menutexthover) ?>; }
-<?php if (! $verbosa_menubullets) { ?>
-#access li a span:before					{ display: none;}
 <?php } ?>
 .dropdown-toggle:hover:after 				{ border-color: <?php echo esc_html($verbosa_metatext) ?>;}
 .searchform:before 							{ background-color: <?php echo esc_html($verbosa_accent2) ?>;

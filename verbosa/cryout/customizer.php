@@ -54,10 +54,17 @@ class Cryout_Customizer {
 	} // __construct()
 
 	public static function register( $wp_customize ) {
-		global $cryout_theme_settings;
-		global $cryout_theme_defaults;
+		$cryout_theme_settings = cryout_get_theme_structure();
+		$cryout_theme_defaults = cryout_get_option_defaults();
 
 		$wp_customize->register_section_type( 'Cryout_Customize_About_Section' );
+
+		////////// override default panel priorities //////////
+		if (!empty($cryout_theme_settings['priorities_overrides'])):
+			foreach ($cryout_theme_settings['priorities_overrides'] as $pid => $new_priority ):
+				if ( !empty($wp_customize->get_section( $pid )->priority) ) $wp_customize->get_section( $pid )->priority = $new_priority;
+			endforeach;
+		endif; //!empty
 
 		////////// add about theme panel and sections //////////
 		if (!empty($cryout_theme_settings['info_sections'])):
@@ -101,7 +108,7 @@ class Cryout_Customizer {
 			$wp_customize->add_panel( $identifier . $panel['id'], array(
 			  'title' => $panel['title'],
 			  'description' => '',
-			  'priority' => $priority+=5,
+			  'priority' => (!empty($panel['priority']) ? $panel['priority'] : $priority+=5 ),
 			) );
 
 		endforeach;
@@ -223,7 +230,7 @@ class Cryout_Customizer {
 			$_opt_id = $opt['id'];
 			$_opt_section = $opt['section'];
 
-			/////////// add all cloned options
+			/////////// handle all cloned options
 			for ( $i=1; $i<=$clone_count; $i++ ) {
 
 				// replace # placeholder with clone index when necessary; use placeholders saved above
@@ -245,7 +252,7 @@ class Cryout_Customizer {
 				////////// add settings
 				$wp_customize->add_setting( $opid, array(
 					'type'			=> 'option',
-					'default'       => ( isset( $cryout_theme_defaults[$opt['id']] ) ? $cryout_theme_defaults[$opt['id']] : '' ),
+					'default'       => ( isset( $cryout_theme_defaults[$opt['id']] ) ? $cryout_theme_defaults[$opt['id']] : ( isset( $opt['value'] ) ? $opt['value'] : '' ) ),
 					'capability'    => 'edit_theme_options',
 					'sanitize_callback' => $sanitize_callback,
 					'transport' 	=> (isset($opt['transport'])?$opt['transport']:'refresh'),
@@ -268,6 +275,18 @@ class Cryout_Customizer {
 							'priority'	=> (isset($opt['priority'])?$opt['priority']:$priority),
 							'active_callback' => ( (isset($opt['active_callback'])) ? $opt['active_callback'] : NULL),
 						) );
+						break;
+					case 'button':
+						$wp_customize->add_control( new Cryout_Customize_Button_Control( $wp_customize, $opid, array(
+							'label'		=> $opt['label'],
+							'description'	=> (isset($opt['desc'])?$opt['desc']:''),
+							'section'	=> $opt['section'],
+							'settings'	=> $opid,
+							'input_attrs' => (!empty($opt['input_attrs'])?$opt['input_attrs']:array()),
+							'type'		=> $opt['type'],
+							'priority'	=> (isset($opt['priority'])?$opt['priority']:$priority),
+							'active_callback' => ( (isset($opt['active_callback'])) ? $opt['active_callback'] : NULL),
+						) ) );
 						break;
 					case 'toggle':
 						$wp_customize->add_control( new Cryout_Customize_Toggle_Control( $wp_customize, $opid, array(
@@ -415,6 +434,18 @@ class Cryout_Customizer {
 							'active_callback' => ( (isset($opt['active_callback'])) ? $opt['active_callback'] : NULL),
 						) ) );
 						break;
+					case 'personalityselect':
+						$wp_customize->add_control( new Cryout_Customize_Personality_Control( $wp_customize, $opid, array(
+							'label'		=> $opt['label'],
+							'description'	=> (isset($opt['desc'])?$opt['desc']:''),
+							'section'	=> $opt['section'],
+							'settings'	=> $opid,
+							'type'		=> $opt['type'],
+							'priority'	=> (isset($opt['priority'])?$opt['priority']:$priority),
+							'choices' 	=> (isset($opt['choices'])?$opt['choices']:array_combine($opt['values'],$opt['labels'])),
+							'active_callback' => ( (isset($opt['active_callback'])) ? $opt['active_callback'] : NULL),
+						) ) );
+						break;
 					case 'radioimage':
 						$wp_customize->add_control( new Cryout_Customize_RadioImage_Control( $wp_customize, $opid, array(
 							'label'		=> $opt['label'],
@@ -503,16 +534,8 @@ class Cryout_Customizer {
 						) ) );
 						break;
 					case 'hint':
-						$wp_customize->add_control( new Cryout_Customize_Hint_Control( $wp_customize, $opid, array(
-							'label' 	=> $opt['label'],
-							'description'	=> $opt['desc'],
-							'section'	=> $opt['section'],
-							'settings'	=> $opid,
-							'input_attrs' => (!empty($opt['input_attrs'])?$opt['input_attrs']:array()),
-							'priority'	=> (isset($opt['priority'])?$opt['priority']:$priority),
-							'active_callback' => ( (isset($opt['active_callback'])) ? $opt['active_callback'] : NULL),
-						) ) );
-						break;
+						/* @since 0.8.7 - integrated hint control into notice */
+						$opt['input_attrs']['class'] = 'hint';
 					case 'notice':
 						$wp_customize->add_control( new Cryout_Customize_Notice_Control( $wp_customize, $opid, array(
 							'label' 	=> $opt['label'],

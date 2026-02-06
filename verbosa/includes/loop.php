@@ -241,6 +241,8 @@ endif;
  */
 if ( ! function_exists( 'verbosa_set_featured_thumb' ) ) :
 function verbosa_set_featured_thumb() {
+	
+	if ( ( cryout_get_option( 'theme_fpost' ) == FALSE ) && ( cryout_get_option( 'verbosa_fspost' ) == FALSE ) ) return;
 
 	global $post;
 	$verbosas = cryout_get_option( array('verbosa_fpost', 'verbosa_fauto', 'verbosa_falign') );
@@ -278,7 +280,7 @@ function verbosa_set_featured_thumb() {
 	<div class="featured-bar"></div>
 <?php };
 endif; // verbosa_set_featured_thumb()
-if (cryout_get_option('verbosa_fpost')) add_action( 'cryout_featured_hook', 'verbosa_set_featured_thumb' );
-if (cryout_get_option('verbosa_fspost')) add_action( 'cryout_singlefeatured_hook', 'verbosa_set_featured_thumb' );
+add_action( 'cryout_featured_hook', 'verbosa_set_featured_thumb' );
+add_action( 'cryout_singlefeatured_hook', 'verbosa_set_featured_thumb' );
 
 /* FIN */

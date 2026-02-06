@@ -2,9 +2,9 @@
 
 Contributors: Cryout Creations
 Requires at least: 4.5
-Tested up to: 6.6
-Stable tag: 1.2.3.1
-Requires PHP: 5.6
+Tested up to: 6.8
+Stable tag: 1.3.0
+Requires PHP: 7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: https://www.cryoutcreations.eu/donate/
@@ -15,7 +15,7 @@ Well then you should give Verbosa a try as she may have all the tools needed to 
 
 Verbosa is also truly responsive, with a fluid layout, uses microformats and microdata for best SEO results, takes great advantage of featured images, supports Google fonts, has social menus with over 100 social icons, is translation ready and RTL. And everything's editable via the customizer with over 100 options! And as an extra, we've coded in a fresh and exquisite perfume that will follow you everywhere once you install the theme!
 
-Copyright 2016-2024 Cryout Creations
+Copyright 2016-2025 Cryout Creations
 https://www.cryoutcreations.eu/
 
 == License ==
@@ -75,13 +75,37 @@ https://pixabay.com/en/typewriter-book-notebook-paper-801921/
 https://pixabay.com/en/knowledge-book-library-glasses-1052010/
 https://pixabay.com/en/leaves-books-color-coffee-cup-1076307/
 
+These images were originally retrieved and bundled with the theme in 2016, when all the websites listed above were licensing them under Creative Commons CC0.
+
 The rest of the bundled images are created by Cryout Creations and released with the theme under GPLv3
 
 
 == Changelog ==
 
+= 1.3.0 =
+*Release date - 2025.11.03*
+
+* Major rewrite of all critical action and filter hooks to resolve the '_load_textdomain_just_in_time() was called incorrectly' notice introduced by WordPress 6.7.
+	***If you're using a child theme to apply complex overrides, these may need adjusting to factor in the new order of hooks***
+* Added Bluesky social icon
+* Added hint (and link) about the landing page functionality in WordPress' Homepage Settings customizer panel
+* Changed outgoing frontend links to be protocol agnostic and avoid warnings from automated quality check tools.
+* Changed WordPress' built-in site identity options panels arrangement for better consistency
+* Fixed 'View all posts by' translation inconsistency in user-bio.php
+* Fixed menu items slightly miasligned when menu bullets are disabled
+* Improved one more instance of unsanitized user names output
+* Removed backwards support for pre-WordPress 4.5 logo functionality
+* Removed HTML Shiv (previously used for Internet Explorer compatibility)
+* Bumped required PHP version to 7.0
+* Updated to Cryout Framework 0.8.7.1:
+	* Added support to change built-in customizer panel priorities
+	* Added support to customize priority for theme customizer panels
+	* Merged 'hint' control as subtype of 'notice' control
+	* Fixed "About theme" customizer panel layout issues due to WordPress 6.7 accessibility changes
+	* Fixed theme indicator misplaced with WordPress 6.7 accessibility changes
+
 = 1.2.3.1 =
-*Release date - 18.09.2024*
+*Release date - 2024.09.18*
 
 * Fixed XSS vulnerability allowing the output of unsanitized user names set by rogue editors/contributors
 

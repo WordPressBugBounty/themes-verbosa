@@ -140,13 +140,17 @@
     background-color: #fff;
     display: block;
     font-size: 0.85em;
-    left: 12px;
+    /* left: 12px; */
     padding: 0 3px;
     position: absolute;
+    /* 6.7 fixes: */
+    top: 50%;
+    transform: translateY(-50%);
+    right: 4em;
 }
 
 #customize-theme-controls [id*="cryout-"] h3.accordion-section-title {
-    padding-left: 40px;
+    /* padding-left: 40px; */ /* 6.7 fix */
 }
 
 
@@ -168,7 +172,7 @@
 #customize-theme-controls [id*="accordion-section-about"] .customize-cryoutspecial-about-link a,
 #customize-theme-controls [id*="accordion-section-cryoutspecial-about-theme"] .customize-cryoutspecial-about-link a {
 	display: block;
-	max-width: 300px;
+	/* max-width: 300px; */
 	padding: 10px;
 	border: 1px solid #DDD;
 	background: #fff;
@@ -197,10 +201,24 @@
 #customize-theme-controls [id*="accordion-section-cryoutspecial-about-theme"] a.customizer-plus-link:hover {
 	opacity: 0.85;
 }
+#customize-theme-controls [id*="accordion-section-about"] .customize-control-description img,
+#customize-theme-controls [id*="accordion-section-cryoutspecial-about-theme"] .customize-control-description img {
+	display: block;
+	margin: 0 auto 1em;
+	width: 100%;
+	max-width: 320px;
+}
+
+#customize-theme-controls [id*="accordion-section-about"].accordion-cryout-a11y .accordion-section-title,
+#customize-theme-controls [id*="accordion-section-cryoutspecial-about-theme"].accordion-cryout-a11y .accordion-section-title {
+	display: flex;
+	justify-content: space-between;
+	padding-right: 3em;
+}
 
 /* theme help/plus link in about section */
 #accordion-section-cryoutspecial-about-theme > .accordion-section-title > a,
-#accordion-panel-cryoutspecial-about-theme > .accordion-section-title >a {
+#accordion-panel-cryoutspecial-about-theme > .accordion-section-title > a {
     content: "Get Plus";
     position: absolute;
     right: 40px;
@@ -208,6 +226,13 @@
 	font-weight: 400;
 	-webkit-transform: translateY(-50%);
 	transform: translateY(-50%);
+}
+
+#accordion-section-cryoutspecial-about-theme > .accordion-section-title > .button,
+#accordion-panel-cryoutspecial-about-theme > .accordion-section-title > .button {
+	max-height: 30px;
+	align-self: center;
+	font-weight: normal;
 }
 
 /* custom length selects */
@@ -368,26 +393,66 @@
 	margin-top: 0;
 }
 
-#customize-theme-controls [id*="cryout-"] .customize-control-cryout-notice .customize-cryoutcontrol-notice-desc,
-.customize-control-cryout-notice .customize-cryoutcontrol-notice-desc {
+#customize-theme-controls [id*="cryout-"] .customize-control-cryout-notice .customize-control-cryout-notice-desc,
+#customize-theme-controls [id*="cryout-"] .customize-control-cryout-notice .customize-control-cryout-notice-warning-desc,
+.customize-control-cryout-notice .customize-control-cryout-notice-desc,
+.customize-control-cryout-notice .customize-control-cryout-warning-desc {
 	background: #fff;
 	border: 1px solid #ddd;
 	color: #222;
 	padding: 8px 12px;
-	font-size: 1.1em;
-	line-height: 1.4;
+	/* font-size: 1.1em; */
+	/* line-height: 1.4; */
 	font-style: normal;
 	margin-top: 0;
 }
 
-#customize-theme-controls [id*="cryout-"] .customize-control-cryout-notice .customize-cryoutcontrol-notice-desc a,
-.customize-control-cryout-notice .customize-cryoutcontrol-notice-desc a {
+#customize-theme-controls [id*="cryout-"] .customize-control-cryout-notice .customize-control-cryout-notice-desc a,
+.customize-control-cryout-notice .customize-control-cryout-notice-desc a {
 	cursor: pointer;
 }
 
-#customize-theme-controls [id*="cryout-"] .customize-control-cryout-notice .customize-cryoutcontrol-notice-warning-desc,
-.customize-control-cryout-notice .customize-cryoutcontrol-notice-warning-desc {
+#customize-theme-controls [id*="cryout-"] .customize-control-cryout-notice .customize-control-cryout-notice-warning-desc,
+.customize-control-cryout-notice .customize-control-cryout-notice-warning-desc {
 	color: #900;
+}
+
+
+/* personality selector */
+.customize-control-personalityselect .personality-image-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.customize-control-personalityselect .personality-image-label {
+    display: inline-block;
+    cursor: pointer;
+	max-width: 47%;
+}
+.customize-control-personalityselect .personality-image-label figure {
+	border: 3px solid var(--wp--preset--color--white);
+    transition: all 0.2s ease;
+}
+
+.customize-control-personalityselect .personality-image-label input[type="radio"] {
+    display: none;
+}
+
+.customize-control-personalityselect .personality-image-label img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.customize-control-personalityselect .personality-image-label figure figcaption {
+	background: var(--wp--preset--color--white);
+	padding: 0.3em 0.5em;
+	margin-top: 1px;
+}
+
+.customize-control-personalityselect .personality-image-label input[type="radio"]:checked + figure {
+    border-color: var(--wp--preset--color--accent-1);
 }
 
 /* RTL */

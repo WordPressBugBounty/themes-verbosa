@@ -7,7 +7,7 @@
 var _cryout_label_max = 'Enlarge';
 var _cryout_label_min = 'Restore';
 
-var _cryout_innerHTML = '<button class="button cryout-expand-sidebar button-secondary" aria-expanded="true" aria-label="' + _cryout_label_max + '" href="#">\
+var _cryout_innerHTML = '<button class="button collapse-sidebar cryout-expand-sidebar button-secondary" aria-expanded="true" aria-label="' + _cryout_label_max + '" href="#">\
         <span class="collapse-sidebar-label">' + _cryout_label_max + '</span>\
 		<span class="collapse-sidebar-arrow" title="' + _cryout_label_max + '"></span>\
 </button> ';

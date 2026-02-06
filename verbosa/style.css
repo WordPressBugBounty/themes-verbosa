@@ -4,16 +4,16 @@ Theme URI: http://www.cryoutcreations.eu/wordpress-themes/verbosa
 Description: Are you a writer? An author? Or maybe a photographer? An artist? Perhaps you do online reviews? Or are you just casually blogging about music, movies and such? Do you like to ramble on? Are you a creator? Do you generate content of any kind? Are we asking too many questions? Is this too much? Have we crossed the line? Well then you should give Verbosa a try as she may have all the tools needed to assist you and your creativity. Verbosa is all about elegant typography, efficient use of contrast, spacing and simplicity. We used all the tricks at our disposal to improve legibility, create emphasis and generate a proper design flow that would make your content more inviting to be read. Verbosa is also truly responsive, with a fluid layout, uses microformats and microdata for best SEO results, takes great advantage of featured images, supports Google fonts, has social menus with over 100 social icons, is translation ready and RTL. And everything's editable via the customizer with over 100 options! And as an extra, we've coded in a fresh and exquisite perfume that will follow you everywhere once you install the theme!
 Author: Cryout Creations
 Author URI: http://www.cryoutcreations.eu
-Version: 1.2.3.1
+Version: 1.3.0
 Requires at least: 4.5
-Tested up to: 6.6
-Requires PHP: 5.6
+Tested up to: 6.8
+Requires PHP: 7.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 Tags: one-column, two-columns, right-sidebar, left-sidebar, footer-widgets, grid-layout, custom-background, custom-colors, custom-header, flexible-header, custom-menu, featured-images, full-width-template, microformats, post-formats, rtl-language-support,  sticky-post, theme-options, threaded-comments, translation-ready, blog, news, photography
 Text Domain: verbosa
 
-Verbosa WordPress Theme - Copyright 2016-2024, Cryout Creations - http://www.cryoutcreations.eu
+Verbosa WordPress Theme - Copyright 2016-2025, Cryout Creations - http://www.cryoutcreations.eu
 This theme, like WordPress, is licensed under the GPL.
 */
 
@@ -796,7 +796,7 @@ a#logo img {
 	transition: all .5s ease-in-out;
 }
 
-#access li a span::before {
+.verbosa-menubullets #access li a span::before {
 	content: "";
 	position: absolute;
 	left: -1.3em;
@@ -828,6 +828,8 @@ a#logo img {
 	float: none;
 	clear: both;
 	word-break: break-all;
+}
+.verbosa-menubullets #access ul li {
 	margin-left: .3em;
 }
 

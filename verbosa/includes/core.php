@@ -64,12 +64,12 @@ endif;
 if ( ! function_exists( 'verbosa_title_and_description' ) ) :
 function verbosa_title_and_description() {
 
-	$options = cryout_get_option( array('verbosa_logoupload','verbosa_siteheader') );
+	$options = cryout_get_option( array( 'verbosa_siteheader' ) );
 
-	if ( in_array($options['verbosa_siteheader'], array( 'logo', 'both' ) ) ) {
-		verbosa_logo_helper($options['verbosa_logoupload']);
+	if ( in_array( $options['verbosa_siteheader'], array( 'logo', 'both' ) ) ) {
+		verbosa_logo_helper();
 	}
-	if ( in_array($options['verbosa_siteheader'], array( 'title', 'both' ) ) ) {
+	if ( in_array( $options['verbosa_siteheader'], array( 'title', 'both' ) ) ) {
 		$heading_tag = ( is_front_page() || is_home() ) ? 'h1' : 'div';
 		echo '<' . $heading_tag . cryout_schema_microdata( 'site-title', 0 ) . ' id="site-title">';
 		echo '<span> <a href="' . esc_url( home_url( '/' ) ) . '" title="' . esc_attr( get_bloginfo( 'description' ) ) . '" rel="home">' . esc_attr( get_bloginfo( 'name' ) ) . '</a> </span>';
@@ -80,21 +80,13 @@ function verbosa_title_and_description() {
 endif;
 add_action ( 'cryout_branding_hook', 'verbosa_title_and_description' );
 
-function verbosa_logo_helper( $verbosa_logo ) {
-	if ( function_exists( 'the_custom_logo' ) ) {
-		// WP 4.5+
+function verbosa_logo_helper() {
 		$wp_logo = str_replace( 'class="custom-logo-link"', 'id="logo" class="custom-logo-link" title="' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '"', get_custom_logo() );
-		if ( ! empty( $wp_logo ) ) echo '<div class="identity">' . $wp_logo . '</div>';
-	} else {
-		// older WP
-		if ( ! empty( $verbosa_logo ) ) :
-			$img = wp_get_attachment_image_src( $verbosa_logo, 'full' );
-			echo '<div class="identity"><a id="logo" href="' . esc_url( home_url( '/' ) ) . '" >
-					<img title="' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '" alt="' . esc_attr( get_bloginfo( 'name', 'display' ) ) . '" src="' . esc_url( $img[0] ) . '" />
-				</a></div>';
-		endif;
-	}
-	echo '';
+		if ( ! empty( $wp_logo ) ) {
+			echo '<div class="identity">' . $wp_logo . '</div>';
+		} else {
+			echo '';
+		}
 } // verbosa_logo_helper()
 
 // cryout_schema_publisher() located in cryout/prototypes.php
@@ -165,7 +157,7 @@ function verbosa_master_footer() {
 	do_action( 'cryout_copyright_hook' );
 	echo '<div style="display:block;float:none;clear:both;font-size: .9em;">' . __( "Powered by", "verbosa" ) .
 		'<a target="_blank" href="' . esc_html( $the_theme->get( 'ThemeURI' ) ) . '" title="';
-	echo 'Verbosa WordPress Theme by ' . 'Cryout Creations"> ' . 'Verbosa' .'</a> &amp; <a target="_blank" href="' . "http://wordpress.org/";
+	echo 'Verbosa WordPress Theme by ' . 'Cryout Creations"> ' . 'Verbosa' .'</a> &amp; <a target="_blank" href="' . "//wordpress.org/";
 	echo '" title="' . esc_attr__( "Semantic Personal Publishing Platform", "verbosa" ) . '"> ' . sprintf( " %s", "WordPress" ) . '</a>.</div>';
 }
 
